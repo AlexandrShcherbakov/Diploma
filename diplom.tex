@@ -12,7 +12,7 @@
 %\usepackage[all]{xy}
 
 % Параметры страницы
-\textheight=24cm
+\textheight=23.5cm
 \textwidth=16cm
 \oddsidemargin=5mm
 \evensidemargin=-5mm
@@ -32,49 +32,40 @@
 
 \begin{titlepage}
 \begin{center}
+\ \vspace{-2cm}
 
-    \bigskip
-    \includegraphics[width=50mm]{msu.pdf}
-
-    \bigskip
-    Московский государственный университет имени М. В. Ломоносова\\
+    \includegraphics[width=0.5\textwidth]{msu.pdf}\\
+    {Московский государственный университет имени М.В.~Ломоносова}\\
     Факультет Вычислительной Математики и Кибернетики\\
-    Кафедра Автоматизации Систем Вычислительных Комплексов\\[10mm]
+    Кафедра Автоматизации Систем Вычислительных Комплексов
+    
+    \vspace{3cm}
 
-    \textsf{\large\bfseries
-        Щербаков Александр Станиславович\\[10mm]
-        Расчёт освещённости при помощи метода излучательности на графических процессорах для интерактивных приложений
-    }\\[10mm]
+    {\Large Щербаков~Александр~Станиславович}
+
+	\vspace{1cm}    
+    
+    {\Large\bfseries Расчёт освещённости при помощи метода излучательности на графических процессорах для интерактивных приложений\\}
+
+	\vspace{1cm}
+
+    {\large ВЫПУСКНАЯ КВАЛИФИКАЦИОННАЯ РАБОТА}
+
+\end{center}
+
+\vfill
 
     \begin{flushright}
-        \parbox{0.5\textwidth}{
-            Выполнил:\\
-            студент 4 курса 420 группы\\
-            \emph{Щербаков Александр Станиславович}\\[5mm]
-            Научный руководитель:\\
-            к.ф-м.н.\\
-            \emph{Фролов Владимир Александрович}
-        }
+            \textbf{Научный руководитель:}\\
+            к.ф-м.н. В. А. Фролов
     \end{flushright}
 
-    \begin{tabular}{p{0.45\textwidth}p{0.45\textwidth}}
-        И. о. заведующего кафедрой\newline
-        Автоматизации Систем\newline
-        Вычислительных Комплексов
-        &
-        ~\newline~\newline
-        \hfill\hbox to 0.45\textwidth{\hrulefill~В. К. Власов}
-    \\[20mm]
-        К защите допускаю\newline
-        \hbox to 0.4\textwidth{<<\hbox to 12mm{\hrulefill}>> \hrulefill~2017 г.}
-        &
-        К защите рекомендую\newline
-        \hbox to 0.45\textwidth{<<\hbox to 12mm{\hrulefill}>> \hrulefill~2017 г.}
-    \end{tabular}
+\vfill
 
-    \vspace{\fill}
+\begin{center}
     Москва, 2017
 \end{center}
+
 \end{titlepage}
 
 \newpage
@@ -598,7 +589,7 @@ incident^{(j + 1)} = F^C \cdot incident^{(j)} = \left( F^C \right) ^ {(j + 1)} \
     \label{speed_comparison}
 \end{figure}
 
-\pagebreak
+%\pagebreak
 
 \subsection{Сравнение качества изображения}
 
