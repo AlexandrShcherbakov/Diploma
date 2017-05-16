@@ -1,0 +1,164 @@
+\documentclass[unicode, dvipsnames]{beamer}
+
+\usetheme{Pittsburgh} %тема
+\usecolortheme{seahorse} %цветовая гамма
+%Выбирать тему и цветовую гамму презентации очень удобно на http://www.hartwork.org/beamer-theme-matrix/
+
+\usefonttheme[onlylarge]{structurebold} % названия и текст в колонтитулах выводится полужирным шрифтом.
+\usefonttheme[onlymath]{serif}  % привычный шрифт для математических формул
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries} % шрифт заголовков слайдов
+
+%Русификация
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+%Для вставки рисунков
+\usepackage{graphics, graphicx}
+\usepackage{epstopdf}
+
+\usepackage[nopar]{lipsum} %для генерации большого текста
+
+%Для вывода листинга TeXовского кода
+\usepackage{listings}
+\usepackage{color}
+\usepackage{textcomp}
+
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\addtobeamertemplate{navigation symbols}{}{ \hspace{1em} \raisebox{2pt}{\usebeamerfont{footline}%
+    \insertframenumber / \inserttotalframenumber}}
+\setbeamercolor{navigation symbols}{fg=MidnightBlue}
+
+\title{Расчёт освещённости при помощи метода излучательности на графических процессорах для интерактивных приложений}
+\author{\small Щербаков Александр \\ \vspace{10pt} Научный руководитель: \\ к.ф.-м.н. Фролов В. А.}
+%\institute[ВМК МГУ]{ВМК МГУ}
+\date{\small 3 июня 2017}
+
+\logo{\includegraphics[height=1cm]{logo.png}\vspace{206pt}}
+\addtobeamertemplate{title page}{\small \begin{center}Московский государственный университет имени М.В.~Ломоносова\\
+Факультет Вычислительной Математики и Кибернетики \\
+Кафедра Автоматизации Систем Вычислительных Комплексов \\
+Лаборатория компьютерной графики и мультимедиа \end{center} \vspace{-10pt}}{}
+
+%%Перед началом каждого раздела выводится его название в рамках общего содержания
+%\AtBeginSection[]
+%{
+%  \begin{frame}{Содержание презентации}
+%    \tableofcontents[currentsection,currentsubsection]
+%  \end{frame}
+%}
+
+\begin{document}
+
+%Титульный слайд
+\frame[plain]{\titlepage}
+
+\begin{frame}
+	\frametitle{Актуальность задачи}
+	\begin{columns}[T]
+    	\begin{column}[T]{5cm}
+			Требования к VR-приложениям:
+    		
+		    \begin{enumerate}
+		    	\item Визуализация на два экрана из разных позиций
+		    	\item Разрешение экрана 1920x1080 и более
+		    	\item Высокая частота кадров 90 и 120 кадров в секунду
+		    \end{enumerate}
+	    \end{column}
+    	\begin{column}[T]{5cm}
+			\includegraphics[width=\textwidth]{VR}
+    	\end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Постановка задачи}
+	\includegraphics[width=\textwidth]{task}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Алгоритм излучательности}
+	\begin{columns}[T]
+    	\begin{column}[T]{5cm}
+			Алгоритм моделирует перенос энергии между площадками сцены.
+			
+			Форм-фактор для i-го и j-го треугольников --- число показывающее, какая часть энергии переходит с i-го треугольника на j-ый.
+	    \end{column}
+    	\begin{column}[T]{5cm}
+			\includegraphics[width=\textwidth]{Radiosity}
+    	\end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Матрица форм-факторов}
+	\begin{columns}[T]
+    	\begin{column}[T]{5cm}
+			\includegraphics[width=\textwidth]{FF_scheme}
+    	\end{column}
+    	\begin{column}[T]{5cm}
+			Умножая световую энергию от первичного освещения на матрицу форм-факторов получаем освещение после первого отражения.
+			
+			Количество элементов в матрице достигает десятков миллионов.
+	    \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Уменьшение количества умножений на матрицу}
+	$F_C$ --- "цветная" матрица форм-факторов
+	
+	$F_C \cdot light$ --- свет, пришедший после первого отражения
+
+	$F_C \cdot F_C \cdot light$ --- свет, пришедший после второго отражения
+	
+	$\cdots$
+	
+	$(F_C^3 + F_C^2 + F_C) \cdot light$ --- вторичное освещение после трех отражений
+	
+	$F_C^3 + F_C^2 + F_C$ --- зависит только от геометрии сцены и, следовательно, может быть посчитанно на этапе предрасчета
+\end{frame}
+
+\begin{frame}
+	\frametitle{Переупорядочивание строк матрицы}
+	\begin{columns}[T]
+    	\begin{column}[T]{5cm}
+			\includegraphics[width=\textwidth]{4}
+    	\end{column}
+    	\begin{column}[T]{5cm}
+			\includegraphics[width=\textwidth]{6}
+	    \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{DXT-сжатие}
+	\includegraphics[width=\textwidth]{31}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Результаты | Размеры файлов форм-факторов}
+	\includegraphics[width=\textwidth]{23}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Результаты | Время выполнения алгоритма}
+	\includegraphics[width=\textwidth]{24}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Результаты | Сравнение изображений}
+	\center
+	\includegraphics[width=0.8\textwidth]{26}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Результаты | Сравнение изображений}
+	\center
+	\includegraphics[width=0.8\textwidth]{28}
+\end{frame}
+
+\end{document}
